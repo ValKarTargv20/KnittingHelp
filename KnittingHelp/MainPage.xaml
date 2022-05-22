@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KnittingHelp.MainPage">
+
+    <MasterDetailPage.Master>
+        <ContentPage Title="Menu" BackgroundColor="LightCyan" Padding="10">
+            <ContentPage.Content>
+                <StackLayout Margin="10" Orientation="Vertical">
+                    <Image x:Name="profileImage"></Image>
+                    <ListView x:Name="aboutList" ItemSelected="aboutList_ItemSelected">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ImageCell Text="{Binding Text}" Detail="{Binding Detail}" ImageSource="{Binding ImagePath}"></ImageCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </ContentPage.Content>
+        </ContentPage>
+    </MasterDetailPage.Master>
+
+    <MasterDetailPage.Detail>
+        <NavigationPage></NavigationPage>
+    </MasterDetailPage.Detail>
+
+</MasterDetailPage>
