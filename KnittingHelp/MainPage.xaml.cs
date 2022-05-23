@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace KnittingHelp
@@ -26,7 +22,7 @@ namespace KnittingHelp
             list.Add(new MasterMenuItems()
             {
                 Text = "Current projects in work",
-                Detail = "Your unfinnished projects",
+                Detail = "You can see project in work",
                 ImagePath = "InWork.jpg",
                 TargetPage = typeof(Views.CurrentPage)
             });
@@ -43,6 +39,13 @@ namespace KnittingHelp
                 Detail = "Your Ideas and future projects",
                 ImagePath = "Ideas.jpg",
                 TargetPage = typeof(Views.IdeasPage)
+            });
+            list.Add(new MasterMenuItems()
+            {
+                Text = "Add new projaect",
+                Detail = "You can add new project",
+                ImagePath = "Add.jpg",
+                TargetPage = typeof(Views.AddPage)
             });
             return list;
         }
