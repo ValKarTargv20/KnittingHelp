@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,10 +16,18 @@ namespace KnittingHelp.Views
         TableView tableView;
         StackLayout st, btn;
         Image project_pic, pattern_pic;
+        string path = @"C:\Aa\KnittingHelp\KnittingHelp.Android\Resources\values\Projekt.txt";
+        string newPath = @"C:\Aa\KnittingHelp\KnittingHelp.Android\Resources\drawable\";
+        bool sp = false;
         public List<Project> projects { get; set; }
         public AddPage()
         {
             InitializeComponent();
+            FileInfo fileInfo = new FileInfo(path);
+            if (!fileInfo.Exists)
+            {
+                File.Create("Project.txt");
+            }
             add_btn = new Button { Text = "Save to projects" }; add_btn.Clicked += Add_btn_Clicked;
             getProject = new Button { Text = "Add project's picture" }; getProject.Clicked += GetProject_Clicked;
             getPattern = new Button { Text = "Add pattern's picture" }; getPattern.Clicked += GetPattern_Clicked;
@@ -69,28 +79,46 @@ namespace KnittingHelp.Views
             Content = tableView;
         }
 
-        private void GetPattern_Clicked(object sender, EventArgs e)
+        async void GetPattern_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            pattern_pic = new Image();
+            var photo = await MediaPicker.PickPhotoAsync();
+            pattern_pic.Source = ImageSource.FromFile(photo.FullPath);
+            File.Copy(photo.FullPath,newPath, true);
         }
 
-        private void GetProject_Clicked(object sender, EventArgs e)
+        async void GetProject_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            project_pic = new Image();
+            var photo = await MediaPicker.PickPhotoAsync();
+            project_pic.Source = ImageSource.FromFile(photo.FullPath);
+            File.Copy(photo.FullPath, newPath, true);
+            if (project_pic != null)
+            {
+                bool sp = true;
+                return;
+            }
         }
 
         private async void Add_btn_Clicked(object sender, EventArgs e)
         {
-            foreach(Project item in projects.ToList())
+            if (sp)
             {
-                if(item.Name != name.Text)
+                foreach (Project item in projects.ToList())
                 {
-                    projects.Add(new Project { Name = name.Text, Project_pic = project_pic.ToString(), Pattern_pic = pattern_pic.ToString(), Notes = notes.Text, Pattern_url = pattern_url.Text, TimerProject = 0, Rows = Convert.ToInt32(rows.Text) });
+                    if (item.Name != name.Text)
+                    {
+                        projects.Add(new Project { Name = name.Text, Project_pic = project_pic.ToString(), Pattern_pic = pattern_pic.ToString(), Notes = notes.Text, Pattern_url = pattern_url.Text, TimerProject = 0, Rows = Convert.ToInt32(rows.Text) });
+                    }
+                    else if (item.Name == name.Text)
+                    {
+                        await DisplayAlert("Attention", "Please enter new name", "OK");
+                    }
                 }
-                else if (item.Name == name.Text)
-                {
-                    await DisplayAlert("Attention", "Please enter new name", "OK");
-                }
+            }
+            else if (!sp)
+            {
+                DisplayAlert("Attention!", "Please add pattern picture", "Ok");
             }
         }
     }
