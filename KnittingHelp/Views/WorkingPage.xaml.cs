@@ -31,6 +31,12 @@ namespace KnittingHelp.Views
                 TextColor = Color.Black,
                 BackgroundColor = Color.Cyan
             };
+            timer_lbl = new Label
+            {
+                Text = DateTime.Now.ToString("T"),
+                TextColor = Color.Black,
+                BackgroundColor = Color.Cyan
+            };
             st = new StackLayout
             {
                 Children = { timer_lbl, row_btn, row_minus_btn }

@@ -42,7 +42,7 @@ namespace KnittingHelp
             });
             list.Add(new MasterMenuItems()
             {
-                Text = "Add new projaect",
+                Text = "Add new project",
                 Detail = "You can add new project",
                 ImagePath = "Add.jpg",
                 TargetPage = typeof(Views.AddPage)

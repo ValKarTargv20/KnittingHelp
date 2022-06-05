@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -8,59 +9,34 @@ namespace KnittingHelp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddPage : ContentPage
     {
-        Button add_btn;
-        EntryCell name, yarn, tools, addons, project_pic, pattern_pic, notes, pattern_url;
+        Button add_btn, getProject, getPattern;
+        EntryCell name, notes, pattern_url, rows;
         TableView tableView;
-        StackLayout st;
+        StackLayout st, btn;
+        Image project_pic, pattern_pic;
         public List<Project> projects { get; set; }
         public AddPage()
         {
             InitializeComponent();
             add_btn = new Button { Text = "Save to projects" }; add_btn.Clicked += Add_btn_Clicked;
-
+            getProject = new Button { Text = "Add project's picture" }; getProject.Clicked += GetProject_Clicked;
+            getPattern = new Button { Text = "Add pattern's picture" }; getPattern.Clicked += GetPattern_Clicked;
+            btn = new StackLayout
+            {
+                Children = {getProject, getPattern},
+                Orientation=StackOrientation.Horizontal,
+                HorizontalOptions=LayoutOptions.CenterAndExpand
+            };
             name = new EntryCell
             {
                 Label = "Project name:",
                 Placeholder = "Enter your project name",
                 Keyboard = Keyboard.Text
             };
-
-            yarn = new EntryCell
-            {
-                Label = "Yarn:",
-                Placeholder = "Enter your yarn name or color",
-                Keyboard = Keyboard.Text
-            };
-
-            tools = new EntryCell
-            {
-                Label = "Tools:",
-                Placeholder = "Enter needles/crochet and numbers",
-                Keyboard = Keyboard.Text
-            };
-
-            addons = new EntryCell
-            {
-                Label = "Addons",
-                Placeholder = "Enter here zippers, buttons and so on",
-                Keyboard = Keyboard.Text
-            };
-            project_pic = new EntryCell
-            {
-                Label = "Project Picture",
-                Placeholder = "Choose picture for your project. You will see on main page",
-                Keyboard = Keyboard.Text
-            };
-            pattern_pic = new EntryCell
-            {
-                Label = "Pattern Picture",
-                Placeholder = "Add here pattern picture or sccreenshot of it",
-                Keyboard = Keyboard.Text
-            };
             notes = new EntryCell
             {
                 Label = "Notes",
-                Placeholder = "You can add some notes or discription",
+                Placeholder = "You can add discription, nidles, yarn and so on.",
                 Keyboard = Keyboard.Text
             };
             pattern_url = new EntryCell
@@ -82,13 +58,9 @@ namespace KnittingHelp.Views
                     new TableSection("Main:") { name },
                     new TableSection("Project Data:")
                     {
-                        yarn,
-                        tools,
-                        addons,
-                        project_pic,
-                        pattern_pic,
                         notes,
-                        pattern_url
+                        pattern_url,
+                        rows
                     },
                     new TableSection { new ViewCell() {View= st } }
                 }
@@ -97,9 +69,29 @@ namespace KnittingHelp.Views
             Content = tableView;
         }
 
-        private void Add_btn_Clicked(object sender, EventArgs e)
+        private void GetPattern_Clicked(object sender, EventArgs e)
         {
-            
+            throw new NotImplementedException();
+        }
+
+        private void GetProject_Clicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async void Add_btn_Clicked(object sender, EventArgs e)
+        {
+            foreach(Project item in projects.ToList())
+            {
+                if(item.Name != name.Text)
+                {
+                    projects.Add(new Project { Name = name.Text, Project_pic = project_pic.ToString(), Pattern_pic = pattern_pic.ToString(), Notes = notes.Text, Pattern_url = pattern_url.Text, TimerProject = 0, Rows = Convert.ToInt32(rows.Text) });
+                }
+                else if (item.Name == name.Text)
+                {
+                    await DisplayAlert("Attention", "Please enter new name", "OK");
+                }
+            }
         }
     }
 }

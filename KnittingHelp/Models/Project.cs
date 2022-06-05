@@ -7,9 +7,6 @@ namespace KnittingHelp
     public class Project
     {
         public string Name { get; set; }
-        public string Yarn { get; set; }
-        public string Tools { get; set; }
-        public string Addons { get; set; }
         public string Project_pic { get; set; }
         public string Pattern_pic { get; set; }
         public string Notes { get; set; }
