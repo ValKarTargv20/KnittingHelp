@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Xamarin.Essentials;
@@ -16,18 +17,14 @@ namespace KnittingHelp.Views
         TableView tableView;
         StackLayout st, btn;
         Image project_pic, pattern_pic;
-        string path = @"C:\Aa\KnittingHelp\KnittingHelp.Android\Resources\values\Projekt.txt";
-        string newPath = @"C:\Aa\KnittingHelp\KnittingHelp.Android\Resources\drawable\";
         bool sp = false;
-        public List<Project> projects { get; set; }
+        public static ReositoryDB database;
+
+        public ObservableCollection<Project> projects { get; set; }
         public AddPage()
         {
             InitializeComponent();
-            FileInfo fileInfo = new FileInfo(path);
-            if (!fileInfo.Exists)
-            {
-                File.Create("Project.txt");
-            }
+            database = App.Database;
             add_btn = new Button { Text = "Save to projects" }; add_btn.Clicked += Add_btn_Clicked;
             getProject = new Button { Text = "Add project's picture" }; getProject.Clicked += GetProject_Clicked;
             getPattern = new Button { Text = "Add pattern's picture" }; getPattern.Clicked += GetPattern_Clicked;
@@ -54,6 +51,12 @@ namespace KnittingHelp.Views
                 Label = "Pattern URL",
                 Placeholder = "You can copy here pattern link",
                 Keyboard = Keyboard.Url
+            };
+            rows = new EntryCell
+            {
+                Label="Rows",
+                Placeholder="Enter rows",
+                Keyboard= Keyboard.Numeric
             };
             st = new StackLayout
             {
@@ -84,7 +87,6 @@ namespace KnittingHelp.Views
             pattern_pic = new Image();
             var photo = await MediaPicker.PickPhotoAsync();
             pattern_pic.Source = ImageSource.FromFile(photo.FullPath);
-            File.Copy(photo.FullPath,newPath, true);
         }
 
         async void GetProject_Clicked(object sender, EventArgs e)
@@ -92,7 +94,6 @@ namespace KnittingHelp.Views
             project_pic = new Image();
             var photo = await MediaPicker.PickPhotoAsync();
             project_pic.Source = ImageSource.FromFile(photo.FullPath);
-            File.Copy(photo.FullPath, newPath, true);
             if (project_pic != null)
             {
                 bool sp = true;

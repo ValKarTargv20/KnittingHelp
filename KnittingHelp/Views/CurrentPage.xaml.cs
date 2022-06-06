@@ -12,7 +12,8 @@ namespace KnittingHelp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CurrentPage : ContentPage
     {
-        public List<Project> projects { get; set; }
+        public List<Project> projects;
+        public static ReositoryDB database;
         Label list_lbl, timer_lbl, notes,pattern_url, rows;
         ListView list, projectList;
         Button count_btn, row_btn, row_minus_btn;
@@ -37,7 +38,7 @@ namespace KnittingHelp.Views
             list = new ListView
             {
                 HasUnevenRows = true,
-                ItemsSource = projects,
+                ItemsSource = App.Database.Projects,
                 ItemTemplate = new DataTemplate(() =>
                 {
                     ImageCell imageCell = new ImageCell { TextColor = Color.Red, DetailColor = Color.Green };
